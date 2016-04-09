@@ -16,5 +16,12 @@ namespace GameOfLife
             list.AddRange(Enumerable.Repeat(new Cell(), randomCellNumber));
             return list;
         }
+
+        public List<Cell> GenerateCells(int dimensions)
+        {
+            var list = new List<Cell>();
+            list.AddRange(Enumerable.Repeat(new Cell(), dimensions));
+            return list;
+        }
     }
 }

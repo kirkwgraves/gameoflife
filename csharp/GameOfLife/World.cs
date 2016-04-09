@@ -24,25 +24,25 @@ namespace GameOfLife
         }
         
         private void GenerateState()
-        {  
+        {
+            var groupOfCells = new Stack<Cell>(_generator.GenerateCells(Width * Height));
+
             Rows = new List<List<Cell>>();
             for (int y = 0; y < Height; y++)
             {
                 var row = new List<Cell>();
                 for (int x = 0; x < Width; x++)
                 {
-                    var cell = GenerateInitialState();
-                    row.Add(cell);
+                    row.Add(groupOfCells.Pop());
                 }
                 Rows.Add(row);
             }
         }
 
-        private static Cell GenerateInitialState()
+        public void Tick()
         {
-            return new Cell();
+             
         }
-
     }
 
  

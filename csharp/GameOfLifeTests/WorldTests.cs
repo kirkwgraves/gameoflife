@@ -1,11 +1,13 @@
 ﻿using System;
-using GameOfLife;
+using System.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using GameOfLife;
 
 namespace GameOfLifeTests
 {
     [TestClass]
-    public class GameOfLifeTests
+    public class WorldTests
     {
         [TestMethod]
         public void NewWorld_GivenDimensions_IsNotNull()
@@ -28,7 +30,7 @@ namespace GameOfLifeTests
         }
 
         [TestMethod]
-        public void NewWorld_GivenDimensions_CellsPopulated()
+        public void NewWorld_GivenDimensions_CellsPopulate()
         {
             var world = new World(1, 1);
             var cell = world.Rows[0][0];
@@ -36,16 +38,23 @@ namespace GameOfLifeTests
             Assert.IsInstanceOfType(cell, typeof(Cell));
         }
 
+
+       
+
         [TestMethod]
-        public void GenerateCells_GivenInstantiation_RandomCellsPopulate()
+        public void Tick_GivenOneLivingNeighbor_CellDies()
         {
+            var cells = new List<Cell>
+            {
+                new Cell {IsAlive = true }
+            };
             var generator = new CellGenerator();
+            var world = new World(1, 1, generator);
 
-            var cells = generator.GenerateCells();
+            world.Tick();
 
-            Assert.IsTrue(cells.Count > 0 && cells.Count < 100 );
+            Assert.IsFalse(world.Rows[0][0].IsAlive);
         }
-
     }
 
     
