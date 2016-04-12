@@ -43,7 +43,7 @@ DDDDD".Trim();
         }
 
         [TestMethod]
-        public void Tick_CellsAreAllDead_NothingLives()
+        public void Tick_CellsAreAllDead_NoCellsLive()
         {
             // Arrange
             var gameboard = new GameBoard(@"
@@ -125,6 +125,50 @@ DDDD".Trim();
 
             // Assert 
             Assert.AreEqual(gameboard.ToString(), expected);        
+        }
+
+        [TestMethod]
+        public void Tick_LivingCellWith2LivingNeighbors_CellLives()
+        {
+            // Arrange
+            var gameboard = new GameBoard(@"
+DDDD
+DAAD
+DDAD
+DDDD".Trim());
+
+            // Act
+            gameboard.Tick();
+            var expected = @"
+DDDD
+DAAD
+DAAD
+DDDD".Trim();
+
+            // Assert
+            Assert.AreEqual(gameboard.ToString(), expected);
+        }
+
+        [TestMethod]
+        public void Tick_LivingCellWith3LivingNeighbors_CellLives()
+        {
+            // Arrange
+            var gameboard = new GameBoard(@"
+DADD
+AAAD
+DDDD
+DDDD".Trim());
+
+            // Act
+            gameboard.Tick();
+            var expected = @"
+AAAD
+AAAD
+DADD
+DDDD".Trim();
+
+            // Assert
+            Assert.AreEqual(gameboard.ToString(), expected);
         }
     }
 }
