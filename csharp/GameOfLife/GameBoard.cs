@@ -38,11 +38,25 @@ namespace GameOfLife
         private char CalculateNewState(int x, int y)
         {
             var thisCell = _state[y][x];
-            var neighbors = GetNeighbors(x, y);
+            var neighbors = GetNeighbors(x, y).ToList();
 
             if (thisCell == 'D')
             {
                 if (neighbors.Count(n => n == 'A') == 3)
+                {
+                    return 'A';
+                }
+            }
+
+            if (thisCell == 'A')
+            {
+                if (neighbors.Count(n => n == 'A') < 2)
+                {
+                    return 'D';
+                }
+
+                if (neighbors.Count(n => n == 'A') == 2
+                    || neighbors.Count(n => n == 'A') == 3)
                 {
                     return 'A';
                 }
@@ -55,23 +69,31 @@ namespace GameOfLife
         {
             var coords = new List<Coord>
             {
-                new Coord(x-1, y-1),
-                new Coord(x-1, y),
-                new Coord(x-1, y+1),
 
                 new Coord(x, y-1),
                 new Coord(x, y+1),
 
                 new Coord(x+1, y-1),
                 new Coord(x+1, y),
-                new Coord(x+1, y+1)
+                new Coord(x+1, y+1),
+
+                new Coord(x-1, y-1),
+                new Coord(x-1, y),
+                new Coord(x-1, y+1)
             };
 
             var neighbors = new List<char>();
             foreach (var pair in coords)
             {
-                var neighboringCell = _state[pair.Y][pair.X];
-                neighbors.Add(neighboringCell);
+                try
+                {
+                    var neighboringCell = _state[pair.Y][pair.X];
+                    neighbors.Add(neighboringCell);
+                }
+                catch
+                {
+                    // No need for exception here
+                }
             }
 
             return neighbors;

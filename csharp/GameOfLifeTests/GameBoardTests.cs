@@ -68,17 +68,39 @@ DDDD".Trim();
             // Arrange
             var gameboard = new GameBoard(@"
 DADD
-ADAD
+AADD
 DDDD
 DDDD".Trim());
 
             // Act
             gameboard.Tick();
             var expected = @"
-DADD
-AAAD
+AADD
+AADD
 DDDD
 DDDD".Trim();
+            // Assert
+            Assert.AreEqual(gameboard.ToString(), expected);
+        }
+
+        [TestMethod]
+        public void Tick_LivingCellWith1LivingNeighbor_CellDies()
+        {
+            //Arrange
+            var gameboard = new GameBoard(@"
+ADDD
+DDDD
+DDDD
+DDDD".Trim());
+
+            //Act
+            gameboard.Tick();
+            var expected = @"
+DDDD
+DDDD
+DDDD
+DDDD".Trim();
+
             // Assert
             Assert.AreEqual(gameboard.ToString(), expected);
         }
