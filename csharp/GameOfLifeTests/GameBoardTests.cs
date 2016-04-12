@@ -104,5 +104,27 @@ DDDD".Trim();
             // Assert
             Assert.AreEqual(gameboard.ToString(), expected);
         }
+
+        [TestMethod]
+        public void Tick_LivingCellWithMoreThan3Neighbors_CellDies()
+        {
+            // Arrange
+            var gameboard = new GameBoard(@"
+AAAD
+AADD
+DDDD
+DDDD".Trim());
+
+            // Act
+            gameboard.Tick();
+            var expected = @"
+ADAD
+ADAD
+DDDD
+DDDD".Trim();
+
+            // Assert 
+            Assert.AreEqual(gameboard.ToString(), expected);        
+        }
     }
 }

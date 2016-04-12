@@ -55,7 +55,12 @@ namespace GameOfLife
                     return 'D';
                 }
 
-                if (neighbors.Count(n => n == 'A') == 2
+                else if (neighbors.Count(n => n == 'A') > 3)
+                {
+                    return 'D';
+                }
+
+                else if (neighbors.Count(n => n == 'A') == 2
                     || neighbors.Count(n => n == 'A') == 3)
                 {
                     return 'A';
