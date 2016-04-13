@@ -10,11 +10,27 @@ namespace GameOfLife
     {
         private List<string> _state;
 
-        public int Width { get { return _state.Max(x => x.Length); } }
-        public int Height { get { return _state.Count; } }
+        private char _alive;
+        private char _dead;
 
-        public GameBoard(string state)
+        public int Width {
+            get
+            {
+                return _state.Max(x => x.Length);
+            }
+        }
+
+        public int Height {
+            get
+            {
+                return _state.Count;
+            }
+        }
+
+        public GameBoard(string state, char alive = 'A', char dead = 'D')
         {
+            _alive = alive;
+            _dead = dead;
             _state = state.Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToList();  
         }
 
@@ -35,42 +51,36 @@ namespace GameOfLife
             _state = newState;
         }
 
-        private char CalculateNewState(int x, int y)
+        private object CalculateNewState(int x, int y)
         {
             var thisCell = _state[y][x];
             var neighbors = GetNeighbors(x, y).ToList();
+            var livingNeighbors = neighbors.Count(n => n == _alive);
 
-            if (thisCell == 'D')
+            if ((thisCell == _alive) && (livingNeighbors == 2 || livingNeighbors == 3))
             {
-                if (neighbors.Count(n => n == 'A') == 3)
-                {
-                    return 'A';
-                }
+                return _alive;
             }
 
-            if (thisCell == 'A')
+            else if (thisCell == _alive && livingNeighbors < 2)
             {
-                if (neighbors.Count(n => n == 'A') < 2)
-                {
-                    return 'D';
-                }
+                return _dead;
+            }
 
-                else if (neighbors.Count(n => n == 'A') > 3)
-                {
-                    return 'D';
-                }
+            else if (thisCell == _alive && livingNeighbors > 3)
+            {
+                return _dead;
+            }
 
-                else if (neighbors.Count(n => n == 'A') == 2
-                    || neighbors.Count(n => n == 'A') == 3)
-                {
-                    return 'A';
-                }
+            else if (thisCell == _dead && livingNeighbors >= 3)
+            {
+                return _alive;
             }
 
             return thisCell;
         }
 
-        private IEnumerable<char> GetNeighbors(int x, int y)
+        private List<char> GetNeighbors(int x, int y)
         {
             var coords = new List<Coord>
             {
