@@ -10,12 +10,14 @@ namespace GameOfLife
     {
         private List<string> _state;
 
+        
         private char _alive;
         private char _dead;
 
         public int Width {
             get
             {
+                // Width property is the maximum value of the string 
                 return _state.Max(x => x.Length);
             }
         }
@@ -23,31 +25,39 @@ namespace GameOfLife
         public int Height {
             get
             {
+                // Height property is the number of strings in the list
                 return _state.Count;
             }
         }
 
         public GameBoard(string state, char alive = 'A', char dead = 'D')
         {
+            // Initialize the state of the gameboard and alive/dead chars for 'cell' state within constructor
             _alive = alive;
             _dead = dead;
+            // Convert the string 'state' variable into a List<string>
             _state = state.Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToList();  
         }
 
         public void Tick()
         {
+            // Initialize a new List<string> to contain new gameboard state
             var newState = new List<string>();
-
+            
+            // Loop through current state columns
             for (int y = 0; y < Height; y++)
             {
                 var thisLine = "";
+                // Loop through current state rows
                 for (int x = 0; x < Width; x++)
                 {
+                    // Build new state through successive calls of CalculateNewState method passing in x and y
                     thisLine += CalculateNewState(x, y);
                 }
+                // Add lines to newState variable
                 newState.Add(thisLine);
             }
-
+            // Assign newState to current state
             _state = newState;
         }
 
@@ -82,6 +92,7 @@ namespace GameOfLife
 
         private List<char> GetNeighbors(int x, int y)
         {
+            // Assign list of coordinates to variable
             var coords = new List<Coord>
             {
 
@@ -102,12 +113,13 @@ namespace GameOfLife
             {
                 try
                 {
+                    // Assign state to each neighboring cell
                     var neighboringCell = _state[pair.Y][pair.X];
                     neighbors.Add(neighboringCell);
                 }
                 catch
                 {
-                    // No need for exception here
+                    // Exception
                 }
             }
 
